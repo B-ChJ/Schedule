@@ -13,24 +13,31 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "schedules")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Schedule {
+public class Schedule extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; //일정 id
-    @Column(length = 50, nullable = false)
+    @Column(length = 30, nullable = false) // 한글은 3바이트
     private String title; //제목
-    private String description; //내용
-    @Column(length = 50, nullable = false)
+    @Column(length = 200, nullable = false)
+    private String content; //내용
+    @Column(nullable = false)
     private String registrant; //작성자명
+    @Column(nullable = false)
     private String password; //비밀번호
-    @CreatedDate
-    @Column(updatable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime createdAt;
-    @LastModifiedDate
-    @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime modifiedAt;
 
+    public Schedule(String title, String content, String registrant, String password) {
+        this.title = title;
+        this.content = content;
+        this.registrant = registrant;
+        this.password = password;
+    }
 
+    public void update(String title, String content, String registrant, String password) {
+        this.title = title;
+        this.content = content;
+        this.registrant = registrant;
+        this.password = password;
+    }
 }
