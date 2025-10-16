@@ -1,5 +1,6 @@
 package com.sparta.schedule.service;
 
+import com.sparta.schedule.repository.ScheduleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -7,5 +8,5 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ScheduleService {
 
-    private final ScheduleService scheduleService;
+    private final ScheduleRepository scheduleRepository;
 }
