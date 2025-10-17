@@ -1,13 +1,12 @@
 package com.sparta.schedule.service;
 
-import com.sparta.schedule.dto.CreateScheduleRequest;
-import com.sparta.schedule.dto.CreateScheduleResponse;
-import com.sparta.schedule.dto.GetScheduleResponse;
+import com.sparta.schedule.dto.*;
 import com.sparta.schedule.entity.Schedule;
 import com.sparta.schedule.repository.ScheduleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +16,7 @@ import java.util.List;
 public class ScheduleService {
 
     private final ScheduleRepository scheduleRepository;
+    private final AbstractHandlerMethodAdapter abstractHandlerMethodAdapter;
 
     //CREATE
     @Transactional
@@ -83,6 +83,33 @@ public class ScheduleService {
                 schedule.getRegistrant(),
                 schedule.getCreatedAt(),
                 schedule.getModifiedAt());
+    }
+    //UPDATE
+    @Transactional
+    public UpdateScheduleResponse update(Long id, UpdateScheduleRequest request) {
+        Schedule schedule = scheduleRepository.findById(id).orElseThrow(
+                () -> new IllegalStateException("존재하지 않는 일정입니다."));
+        if(!(schedule.getPassword().equals(request.getPassword()))) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
+        schedule.update(request.getTitle(), request.getRegistrant(), request.getModifiedAt());
+
+        return new UpdateScheduleResponse(schedule.getId(),
+                schedule.getTitle(),
+                schedule.getRegistrant(),
+                schedule.getModifiedAt());
+    }
+    //DELETE
+    @Transactional
+    public void delete(Long id, String password) {
+        Schedule schedule = scheduleRepository.findById(id).orElseThrow(
+                () -> new IllegalStateException("존재하지 않는 일정입니다."));
+
+        if(!(schedule.getPassword().equals(password))) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
+
+        scheduleRepository.deleteById(id);
     }
 
 }
