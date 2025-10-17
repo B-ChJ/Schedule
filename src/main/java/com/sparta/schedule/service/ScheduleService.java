@@ -16,7 +16,6 @@ import java.util.List;
 public class ScheduleService {
 
     private final ScheduleRepository scheduleRepository;
-    private final AbstractHandlerMethodAdapter abstractHandlerMethodAdapter;
 
     //CREATE
     @Transactional
@@ -48,6 +47,7 @@ public class ScheduleService {
                     schedule.getRegistrant(),
                     schedule.getCreatedAt(),
                     schedule.getModifiedAt());
+            allSchedules.add(dto);
         }
 
         return allSchedules;

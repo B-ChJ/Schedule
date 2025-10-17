@@ -1,10 +1,8 @@
 package com.sparta.schedule.controller;
 
 import com.sparta.schedule.dto.*;
-import com.sparta.schedule.entity.Schedule;
 import com.sparta.schedule.service.ScheduleService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.graphql.GraphQlProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +27,7 @@ public class ScheduleController {
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
-    @GetMapping("/schedules/{registrant}")
+    @GetMapping("/schedules/register/{registrant}")
     public ResponseEntity<List<GetScheduleResponse>> getByRegistrant(@PathVariable String registrant) {
         List<GetScheduleResponse> result = scheduleService.getByRegistrant(registrant);
         return ResponseEntity.status(HttpStatus.OK).body(result);
