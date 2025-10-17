@@ -1,12 +1,89 @@
 package com.sparta.schedule.service;
 
+import com.sparta.schedule.dto.CreateScheduleRequest;
+import com.sparta.schedule.dto.CreateScheduleResponse;
+import com.sparta.schedule.dto.GetScheduleResponse;
+import com.sparta.schedule.entity.Schedule;
 import com.sparta.schedule.repository.ScheduleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class ScheduleService {
 
     private final ScheduleRepository scheduleRepository;
+
+    //CREATE
+    @Transactional
+    public CreateScheduleResponse save(CreateScheduleRequest request) {
+        Schedule schedule = new Schedule(request.getTitle(),
+                request.getContent(),
+                request.getRegistrant(),
+                request.getPassword());
+
+        Schedule savedSchedule = scheduleRepository.save(schedule);
+
+        return new CreateScheduleResponse(savedSchedule.getTitle(),
+                savedSchedule.getContent(),
+                savedSchedule.getRegistrant(),
+                savedSchedule.getPassword());
+    }
+
+    //READ
+    //전체 조회
+    @Transactional(readOnly = true)
+    public List<GetScheduleResponse> getAll() {
+        List<Schedule> schedules = scheduleRepository.findAll();
+        List<GetScheduleResponse> allSchedules = new ArrayList<>();
+
+        for (Schedule schedule : schedules) {
+            GetScheduleResponse dto = new GetScheduleResponse(schedule.getId(),
+                    schedule.getTitle(),
+                    schedule.getContent(),
+                    schedule.getRegistrant(),
+                    schedule.getCreatedAt(),
+                    schedule.getModifiedAt());
+        }
+
+        return allSchedules;
+    }
+    // 작성자명 검색 조회
+    @Transactional(readOnly = true)
+    public List<GetScheduleResponse> getByRegistrant(String registrant) {
+        List<Schedule> schedules = scheduleRepository.findAll();
+        List<GetScheduleResponse> searchedSchedules = new ArrayList<>();
+
+        for (Schedule schedule : schedules) {
+            if (schedule.getRegistrant().equals(registrant)) {
+                GetScheduleResponse dto = new GetScheduleResponse(schedule.getId(),
+                        schedule.getTitle(),
+                        schedule.getContent(),
+                        schedule.getRegistrant(),
+                        schedule.getCreatedAt(),
+                        schedule.getModifiedAt());
+                searchedSchedules.add(dto);
+            }
+        }
+        return searchedSchedules;
+    }
+    //단 건 조회
+    @Transactional(readOnly = true)
+    public GetScheduleResponse getOne(Long id) {
+        Schedule schedule = scheduleRepository.findById(id).orElseThrow(
+                () -> new IllegalStateException("존재하지 않는 일정입니다."));
+
+        return new GetScheduleResponse(schedule.getId(),
+                schedule.getTitle(),
+                schedule.getContent(),
+                schedule.getRegistrant(),
+                schedule.getCreatedAt(),
+                schedule.getModifiedAt());
+    }
+
 }
+
