@@ -1,12 +1,11 @@
 package com.sparta.schedule.service;
 
-import com.sparta.schedule.dto.*;
+import com.sparta.schedule.ScheduleDto.*;
 import com.sparta.schedule.entity.Schedule;
 import com.sparta.schedule.repository.ScheduleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
