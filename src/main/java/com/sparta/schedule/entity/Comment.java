@@ -5,6 +5,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Entity
 @Table(name = "comments")
@@ -25,5 +27,9 @@ public class Comment extends BaseEntity {
         this.text = text;
         this.writer = writer;
         this.password = password;
+    }
+    public void update(String text, String writer) {
+        this.text = text;
+        this.writer = writer;
     }
 }
