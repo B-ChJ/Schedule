@@ -8,6 +8,8 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Entity
@@ -27,6 +29,9 @@ public class Schedule extends BaseEntity {
     @Column(nullable = false)
     private String password; //비밀번호
 
+    @OneToMany
+    private List<Comment> comments = new ArrayList<>();
+
     public Schedule(String title, String content, String registrant, String password) {
         this.title = title;
         this.content = content;
@@ -34,7 +39,7 @@ public class Schedule extends BaseEntity {
         this.password = password;
     }
 
-    public void update(String title, String registrant, LocalDateTime modifiedAt) {
+    public void update(String title, String registrant) {
         this.title = title;
         this.registrant = registrant;
     }

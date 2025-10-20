@@ -7,6 +7,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class CommentService {
@@ -27,18 +30,27 @@ public class CommentService {
                 savedComment.getPassword(),
                 savedComment.getScheduleId());
     }
+
     //READ
     @Transactional(readOnly = true)
-    public GetCommentResponse getById(Long scheduleId) {
-        Comment comment = commentRepository.findById(scheduleId).orElseThrow(
-                () -> new IllegalStateException("존재하지 않는 댓글입니다."));
+    public List<GetCommentResponse> getById(Long scheduleId) {
+        List<Comment> commentAll = commentRepository.findAll();
+        List<GetCommentResponse> commentById = new ArrayList<>();
 
-        return new GetCommentResponse(comment.getId(),
-                comment.getText(),
-                comment.getWriter(),
-                comment.getScheduleId(),
-                comment.getCreatedAt(),
-                comment.getModifiedAt());
+        for (Comment comment : commentAll) {
+            if (comment.getScheduleId().equals(scheduleId)) {
+                GetCommentResponse dto = new GetCommentResponse(comment.getId(),
+                        comment.getText(),
+                        comment.getWriter(),
+                        comment.getScheduleId(),
+                        comment.getCreatedAt(),
+                        comment.getModifiedAt());
+
+                commentById.add(dto);
+            }
+        }
+
+        return commentById;
     }
 
     //UPDATE
@@ -56,12 +68,13 @@ public class CommentService {
                 comment.getWriter(),
                 comment.getModifiedAt());
     }
+
     //DELETE
     @Transactional
     public void delete(Long commentId, DeleteCommentRequest request) {
         Comment comment = commentRepository.findById(commentId).orElseThrow(
                 () -> new IllegalStateException("존재하지 않는 댓글입니다."));
-        if(!(comment.getPassword().equals(request.getPassword()))) {
+        if (!(comment.getPassword().equals(request.getPassword()))) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
         commentRepository.deleteById(commentId);

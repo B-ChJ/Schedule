@@ -44,6 +44,7 @@ public class ScheduleService {
                     schedule.getTitle(),
                     schedule.getContent(),
                     schedule.getRegistrant(),
+                    schedule.getComments(),
                     schedule.getCreatedAt(),
                     schedule.getModifiedAt());
             allSchedules.add(dto);
@@ -63,6 +64,7 @@ public class ScheduleService {
                         schedule.getTitle(),
                         schedule.getContent(),
                         schedule.getRegistrant(),
+                        schedule.getComments(),
                         schedule.getCreatedAt(),
                         schedule.getModifiedAt());
                 searchedSchedules.add(dto);
@@ -80,6 +82,7 @@ public class ScheduleService {
                 schedule.getTitle(),
                 schedule.getContent(),
                 schedule.getRegistrant(),
+                schedule.getComments(),
                 schedule.getCreatedAt(),
                 schedule.getModifiedAt());
     }
@@ -91,7 +94,7 @@ public class ScheduleService {
         if(!(schedule.getPassword().equals(request.getPassword()))) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
-        schedule.update(request.getTitle(), request.getRegistrant(), request.getModifiedAt());
+        schedule.update(request.getTitle(), request.getRegistrant());
 
         return new UpdateScheduleResponse(schedule.getId(),
                 schedule.getTitle(),
