@@ -22,11 +22,14 @@ public class Comment extends BaseEntity {
     private String writer;
     @Column(nullable = false)
     private String password;
+    @Column(nullable = false)
+    private Long scheduleId;
 
-    public Comment(String text, String writer, String password) {
+    public Comment(String text, String writer, String password, Long scheduleId) {
         this.text = text;
         this.writer = writer;
         this.password = password;
+        this.scheduleId = scheduleId;
     }
     public void update(String text, String writer) {
         this.text = text;

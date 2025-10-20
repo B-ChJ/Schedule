@@ -17,23 +17,26 @@ public class CommentService {
     public CreateCommentResponse create(CreateCommentRequest request) {
         Comment comment = new Comment(request.getText(),
                 request.getWriter(),
-                request.getPassword());
+                request.getPassword(),
+                request.getScheduleId());
 
         Comment savedComment = commentRepository.save(comment);
 
         return new CreateCommentResponse(savedComment.getText(),
                 savedComment.getWriter(),
-                savedComment.getPassword());
+                savedComment.getPassword(),
+                savedComment.getScheduleId());
     }
     //READ
     @Transactional(readOnly = true)
-    public GetCommentResponse getById(Long commentId) {
-        Comment comment = commentRepository.findById(commentId).orElseThrow(
+    public GetCommentResponse getById(Long scheduleId) {
+        Comment comment = commentRepository.findById(scheduleId).orElseThrow(
                 () -> new IllegalStateException("존재하지 않는 댓글입니다."));
 
         return new GetCommentResponse(comment.getId(),
                 comment.getText(),
                 comment.getWriter(),
+                comment.getScheduleId(),
                 comment.getCreatedAt(),
                 comment.getModifiedAt());
     }
