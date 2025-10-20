@@ -6,5 +6,5 @@ import lombok.Getter;
 public class UpdateCommentRequest {
     private String text;
     private String writer;
-    private String password;
+    private String passwordComment;
 }

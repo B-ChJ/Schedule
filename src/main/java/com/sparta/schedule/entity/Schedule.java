@@ -4,10 +4,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +26,7 @@ public class Schedule extends BaseEntity {
     @Column(nullable = false)
     private String password; //비밀번호
 
-    @OneToMany
+    @OneToMany(mappedBy = "schedule", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
     public Schedule(String title, String content, String registrant, String password) {
