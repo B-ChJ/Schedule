@@ -38,6 +38,13 @@ public class Schedule extends BaseEntity {
         this.registrant = registrant;
         this.password = password;
     }
+    public void addComment(Comment comment) {
+        if(comments.size() >= 10) {
+            throw new IllegalStateException("댓글은 최대 10개까지 등록할 수 있습니다.");
+        }
+        comments.add(comment);
+
+    }
 
     public void update(String title, String registrant) {
         this.title = title;
