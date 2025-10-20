@@ -17,11 +17,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CommentController {
     private final CommentService commentService;
-    private final CommentRepository commentRepository;
 
     @PostMapping("/schedules/{scheduleId}/comments")
     public ResponseEntity<CreateCommentResponse> create(@PathVariable("scheduleId") Long scheduleId, CreateCommentRequest request) {
-        CreateCommentResponse result = commentService.create(request);
+        CreateCommentResponse result = commentService.create(scheduleId, request);
+
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 

@@ -2,7 +2,9 @@ package com.sparta.schedule.service;
 
 import com.sparta.schedule.CommentDto.*;
 import com.sparta.schedule.entity.Comment;
+import com.sparta.schedule.entity.Schedule;
 import com.sparta.schedule.repository.CommentRepository;
+import com.sparta.schedule.repository.ScheduleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,15 +16,19 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CommentService {
     private final CommentRepository commentRepository;
+    private final ScheduleRepository scheduleRepository;
 
     //CREATE
     @Transactional
-    public CreateCommentResponse create(CreateCommentRequest request) {
+    public CreateCommentResponse create(Long scheduleId, CreateCommentRequest request) {
+        Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(
+                () -> new IllegalStateException("존재하지 않는 일정입니다."));
         Comment comment = new Comment(request.getText(),
                 request.getWriter(),
                 request.getPassword(),
                 request.getScheduleId());
 
+        schedule.addComment(comment);
         Comment savedComment = commentRepository.save(comment);
 
         return new CreateCommentResponse(savedComment.getText(),
